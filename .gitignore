@@ -1,7 +1,7 @@
 ## Ignore specific files
 
-# data/*
-# output/*
+data/*
+output/*
 checkpoints/*
 
 ## Ignore Visual Studio temporary files, build results, and
