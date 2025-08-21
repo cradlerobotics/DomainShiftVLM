@@ -1,0 +1,25 @@
+{
+    "llama_vision": {
+        "12": "llama3.2-vision:11b",
+        "24": "llama3.2-vision:11b"
+    },
+    "qwen": {
+        "12": "qwen2.5vl:7b",
+        "24": "qwen2.5vl:32b"
+    },
+    "gemma": {
+        "12": "gemma3:12b",
+        "24": "gemma3:27b"
+    },
+    "llava": {
+        "12": "llava:13b",
+        "24": "llava:34b"
+    },
+    "gemma3n": {
+        "12": "gemma3n:e4b",
+        "24": "gemma3n:e4b"
+    },
+    "mistral": {
+        "24": "mistral-small3.1"
+    }
+}

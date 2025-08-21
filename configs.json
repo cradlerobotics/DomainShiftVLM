@@ -1,0 +1,16 @@
+{
+    "general": {
+        "device": "cuda"
+    },
+    "prompts": {
+        "vlm": {
+            "gemma": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "llama_vision": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "llava": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "qwen": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "gemma3n": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "mistral": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple",
+            "smolvlm2": "Describe in detail the object in the image in a few words. \n Maintain a concise, factual tone. \n Ignore the background. \n Here is an example of your output if you are given an image of a red apple on a table: red apple"
+        }
+    }
+}
