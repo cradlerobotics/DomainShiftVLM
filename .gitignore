@@ -1,9 +1,7 @@
 ## Ignore specific files
 
-load_credentials.sh
-data/*
-robot_poses.csv
-output/*
+# data/*
+# output/*
 checkpoints/*
 
 ## Ignore Visual Studio temporary files, build results, and
