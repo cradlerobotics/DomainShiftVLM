@@ -35,9 +35,11 @@ Start Ollama:
 ollama serve
 ```
 
-Download the models from Ollama:
+Download the models from Ollama (specify your GPU's VRAM size: 12 or 24):
 ```bash
-bash download_from_ollama.sh
+bash download_from_ollama.sh 12  # For 12GB VRAM
+# OR
+bash download_from_ollama.sh 24  # For 24GB VRAM
 ```
 
 ### Download SAM2 Checkpoint
@@ -50,7 +52,9 @@ wget -P checkpoints/ https://dl.fbaipublicfiles.com/segment_anything_2/092824/sa
 
 During the first run, the captioning will download some models from HuggingFace and store them in `~/.cache/huggingface`.
 ```bash
-bash run_all.sh
+bash run_all.sh 12  # For 12GB VRAM
+# OR
+bash run_all.sh 24  # For 24GB VRAM
 ```
 
 ## Evaluation
