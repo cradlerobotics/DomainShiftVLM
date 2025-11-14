@@ -2,68 +2,89 @@
 
 This repository contains the data and the code for the paper "Evaluating the Robustness of Open-Source Vision-Language Models to Domain Shift in Object Captioning".
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Setup](#setup)
+- [Quick Start](#quick-start)
+- [Codebase Structure](#codebase-structure)
+- [Usage](#usage)
+- [Development Guidelines](#development-guidelines)
+
+## Overview
+
+This project evaluates the robustness of vision-language models (VLMs) to domain shift in object captioning tasks. It provides:
+
+- **Segmentation pipeline** using SAM2 for automatic object detection
+- **Captioning pipeline** supporting multiple VLMs (BLIP2, Gemma, LLaMA Vision, Qwen, LLaVA, Mistral, SmolVLM2)
+- **Evaluation metrics** including CIDEr, BERTScore, ROUGE-L, GPTScore, and CLIPScore
+- **Domain shift analysis** comparing performance on real vs. synthetic (3D) data
+
 ## Setup
 
-```bash
-conda create -y -n vlm python=3.10
-conda activate vlm
-pip install -r requirements.txt
-```
+### Prerequisites
 
-Authenticate with Hugging Face to download required models:
+- Python 3.10
+- CUDA-compatible GPU (12GB or 24GB VRAM recommended)
+- Conda package manager
 
-```bash
-huggingface-cli login
-```
-*(Create a token from your Hugging Face account if needed.)*
+### Installation
 
-Download NLTK resources:
+1. **Create and activate conda environment:**
+   ```bash
+   conda create -y -n vlm python=3.10
+   conda activate vlm
+   pip install -r requirements.txt
+   ```
 
-```python
-import nltk
-nltk.download('wordnet')
-```
+2. **Authenticate with Hugging Face:**
+   ```bash
+   huggingface-cli login
+   ```
+   *(Create a token from your Hugging Face account if needed.)*
 
-Install Ollama:
+3. **Download NLTK resources:**
+   ```python
+   import nltk
+   nltk.download('wordnet')
+   ```
 
-```bash
-curl https://ollama.ai/install.sh | sh
-```
+4. **Install and configure Ollama:**
+   ```bash
+   curl https://ollama.ai/install.sh | sh
+   ollama serve
+   ```
 
-Start Ollama:
-```bash
-ollama serve
-```
+5. **Download Ollama models** (specify your GPU's VRAM size: 12 or 24):
+   ```bash
+   bash download_from_ollama.sh 12  # For 12GB VRAM
+   # OR
+   bash download_from_ollama.sh 24  # For 24GB VRAM
+   ```
 
-Download the models from Ollama (specify your GPU's VRAM size: 12 or 24):
-```bash
-bash download_from_ollama.sh 12  # For 12GB VRAM
-# OR
-bash download_from_ollama.sh 24  # For 24GB VRAM
-```
+6. **Download SAM2 checkpoint:**
+   ```bash
+   wget -P checkpoints/ https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+   ```
 
-### Download SAM2 Checkpoint
+## Quick Start
 
-```bash
-wget -P checkpoints/ https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
-```
+Run the complete pipeline (segmentation + captioning with all VLMs):
 
-## Captioning
-
-During the first run, the captioning will download some models from HuggingFace and store them in `~/.cache/huggingface`.
 ```bash
 bash run_all.sh 12  # For 12GB VRAM
 # OR
 bash run_all.sh 24  # For 24GB VRAM
 ```
 
-## Evaluation
+During the first run, models will be downloaded from HuggingFace and stored in `~/.cache/huggingface`.
 
-Run the Jupyter notebook `first_frame_eval.ipynb`.
+For evaluation, run the Jupyter notebook:
+```bash
+jupyter notebook first_frame_eval.ipynb
+```
 
 ## Codebase Structure
-
-The repository is organized as follows:
 
 ```
 DomainShiftVLM/
@@ -98,15 +119,15 @@ DomainShiftVLM/
 
 ### Key Components
 
-#### 1. Captioning Module (`captioning/`)
+#### Captioning Module (`captioning/`)
 All captioners inherit from the abstract `Captioner` base class, which defines three key methods:
 - `_init_models()`: Initialize the model and processor
 - `caption(imgs, user_prompt=None)`: Generate captions for a list of images
 - `stop()`: Clean up resources and free GPU memory
 
 **Available Captioners:**
-- **BLIP2** (`blip2_captioner.py`): Uses Salesforce/blip2-opt-2.7b with 8-bit quantization
-- **Ollama VLMs** (`ollama_captioner.py`): Wrapper for Ollama-based models including:
+- **BLIP2** (`blip2_captioner.py`): Salesforce/blip2-opt-2.7b with 8-bit quantization
+- **Ollama VLMs** (`ollama_captioner.py`): Wrapper for Ollama-based models:
   - llama_vision (Llama 3.2 Vision)
   - qwen (Qwen 2.5 Vision)
   - gemma (Gemma 3)
@@ -115,27 +136,18 @@ All captioners inherit from the abstract `Captioner` base class, which defines t
 - **Gemma 3N** (`gemma3n_captioner.py`): Google's Gemma 3N model
 - **SmolVLM2** (`smolvlm2_captioner.py`): Lightweight vision-language model
 
-#### 2. Segmentation Module (`segmentation/`)
+#### Segmentation Module (`segmentation/`)
 - Uses SAM2 (Segment Anything 2) for automatic object segmentation
 - Generates masks and bounding boxes for objects in frames
 - Includes mask cleaning and blob removal for better quality
 - Outputs: segmentation masks, bounding boxes, and visualization images
 
-#### 3. Evaluation Module (`evaluation/`)
+#### Evaluation Module (`evaluation/`)
 - **NLP Metrics**: CIDEr, BERTScore, ROUGE-L, GPTScore
 - **Vision Metrics**: CLIPScore for image-text alignment
 - Benchmark tools for comparing model performance across domains
 
-#### 4. Main Scripts
-- **`caption_data.py`**: Main captioning pipeline that:
-  - Loads segmentation results
-  - Crops and optionally masks objects
-  - Generates captions using selected VLM
-  - Saves results to CSV
-- **`run_all.sh`**: Automated pipeline for running segmentation and captioning on all VLMs
-- **`download_from_ollama.sh`**: Downloads appropriate Ollama models based on VRAM size
-
-### Configuration
+### Configuration Files
 
 #### `configs.json`
 Contains prompts for each VLM model and device settings:
@@ -191,6 +203,50 @@ output/
 └── real/
     └── (same structure as 3d/)
 ```
+
+## Usage
+
+### Running the Complete Pipeline
+
+Run segmentation and captioning on all VLMs for all datasets:
+```bash
+bash run_all.sh 12  # For 12GB VRAM
+bash run_all.sh 24  # For 24GB VRAM
+```
+
+### Running Individual Components
+
+#### Segmentation Only
+```bash
+python segmentation/segmentor.py --dataset real --image data/real/frame0000.png
+```
+
+#### Captioning with Specific Model
+
+Without masks:
+```bash
+python caption_data.py --captioner blip2 --dataset real
+```
+
+With masks:
+```bash
+python caption_data.py --captioner gemma3n --use_masks --dataset 3d --tot_vram_gb 24
+```
+
+#### Captioning with Specific Ollama VLM
+```bash
+python caption_data.py --captioner llama_vision --dataset real --tot_vram_gb 12
+python caption_data.py --captioner qwen --dataset real --tot_vram_gb 24
+```
+
+### Evaluation
+
+Run the evaluation notebook to analyze results:
+```bash
+jupyter notebook first_frame_eval.ipynb
+```
+
+The notebook computes various metrics (CIDEr, BERTScore, ROUGE-L, GPTScore, CLIPScore) and compares model performance across domains.
 
 ## Development Guidelines
 
@@ -281,27 +337,6 @@ To add a new evaluation metric:
 4. **Resource Management**: Always implement `stop()` method to free GPU memory
 5. **Batch Processing**: Use batch processing with tqdm for progress tracking
 6. **Device Management**: Support both CUDA and CPU, default to CUDA
-
-### Running Individual Components
-
-#### Run Segmentation Only
-```bash
-python segmentation/segmentor.py --dataset real --image data/real/frame0000.png
-```
-
-#### Run Captioning with Specific Model
-```bash
-# Without masks
-python caption_data.py --captioner blip2 --dataset real
-
-# With masks
-python caption_data.py --captioner gemma3n --use_masks --dataset 3d --tot_vram_gb 24
-```
-
-#### Run Specific VLM via Ollama
-```bash
-python caption_data.py --captioner llama_vision --dataset real --tot_vram_gb 12
-```
 
 ### Testing Your Changes
 
