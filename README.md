@@ -41,7 +41,7 @@ This project evaluates the robustness of vision-language models (VLMs) to domain
    ```bash
    huggingface-cli login
    ```
-   *(Create a token from your Hugging Face account if needed.)*
+   *(Create a [token](https://huggingface.co/docs/hub/en/security-tokens) from your Hugging Face account if needed.)*
 
 3. **Download NLTK resources:**
    ```python
