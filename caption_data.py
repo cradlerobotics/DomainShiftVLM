@@ -95,7 +95,9 @@ def crop_and_mask(image, bounding_boxes, masks=None):
             # If no masks are provided, use the original image
             new_image = image
         # Crop the image based on the bounding box
-        x1, y1, x2, y2 = box
+        # Bounding boxes are in XYWH format (x, y, width, height)
+        x, y, w, h = box
+        x1, y1, x2, y2 = x, y, x + w, y + h
         cropped_image = new_image.crop((x1, y1, x2, y2))
         # Check if the cropped image is empty
         if cropped_image.getbbox() is None:

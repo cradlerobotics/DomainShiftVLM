@@ -174,14 +174,24 @@ class Segmentor:
         for mask in masks:
             bboxes.append(mask["bbox"])
         print(f"Extracted {len(bboxes)} valid bounding boxes from SAM2")
-        # Save mask data as npz
+        
+        # Create frame data in the same format as video tracking
+        frame_data = {
+            0: {
+                'num_objects': len(binary_masks),
+                'masks': binary_masks,
+                'bboxes': bboxes
+            }
+        }
+        
+        # Save mask data as npz in the same format as video tracking
         mask_data_path = os.path.join(output_dir, "tracking_data.npz")
         try:
             np.savez_compressed(
                 mask_data_path,
-                num_objects=len(binary_masks),
-                bboxes=np.array(bboxes),
-                **{f"mask_{i}": m for i, m in enumerate(binary_masks)}
+                frame_count=1,
+                frame_indices=[0],
+                **{f"frame_{idx}": data for idx, data in frame_data.items()}
             )
             print(f"Saved mask data to {mask_data_path}")
         except Exception as e:
