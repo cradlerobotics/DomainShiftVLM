@@ -17,7 +17,7 @@ DATA=("real" "3d")
 
 for D in "${DATA[@]}"; do
     echo "========RUNNING VIDEO SEGMENTATION========="
-    python segmentation/segmentor.py --dataset $D
+    python segmentation/segmentor.py --dataset $D --image data/$D/frame0000.png
 
     echo "========RUNNING CAPTIONING========="
 
