@@ -8,6 +8,7 @@ This repository contains the data and the code for the paper "Evaluating the Rob
 conda create -y -n vlm python=3.10
 conda activate vlm
 pip install -r requirements.txt
+pip install flash-attn --no-build-isolation
 ```
 
 Authenticate with Hugging Face to download required models:

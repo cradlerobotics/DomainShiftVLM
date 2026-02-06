@@ -31,4 +31,4 @@ protobuf
 sentencepiece
 timm
 num2words
-flash-attn --no-build-isolation
+#flash-attn --no-build-isolation
