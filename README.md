@@ -72,6 +72,14 @@ pip install flash-attn --no-build-isolation
    wget -P checkpoints/ https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
    ```
 
+7. **Extract the frames from the videos:**
+   ```bash
+   ffmpeg -i data/real/video.avi -filter:v fps=1 -c:v h264 data/real/video.mp4
+   ffmpeg -i data/real/video.mp4 -start_number 0 data/real/frame%04d.png
+   ffmpeg -i data/3d/video.avi -filter:v fps=1 -c:v h264 data/3d/video.mp4
+   ffmpeg -i data/3d/video.mp4 -start_number 0 data/3d/frame%04d.png
+   ```
+
 ## Quick Start
 
 Run the complete pipeline (segmentation + captioning with all VLMs):
