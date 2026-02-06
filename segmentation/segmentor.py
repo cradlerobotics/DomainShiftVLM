@@ -175,7 +175,7 @@ class Segmentor:
             bboxes.append(mask["bbox"])
         print(f"Extracted {len(bboxes)} valid bounding boxes from SAM2")
         # Save mask data as npz
-        mask_data_path = os.path.join(output_dir, "mask_data.npz")
+        mask_data_path = os.path.join(output_dir, "tracking_data.npz")
         try:
             np.savez_compressed(
                 mask_data_path,
@@ -191,7 +191,7 @@ class Segmentor:
 def run_segmentation(dataset, image_path):    
     sam2_checkpoint = "checkpoints/sam2.1_hiera_large.pt"
     model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
-    output_dir = f"output/{dataset}/sam2_segmentation"
+    output_dir = f"output/{dataset}/sam2_tracking"
     segmentor = Segmentor(sam2_checkpoint, model_cfg)
     masks, binary_masks = segmentor.process_image(image_path, output_dir, dataset)
     print(f"Processed image with {len(binary_masks)} masks")
